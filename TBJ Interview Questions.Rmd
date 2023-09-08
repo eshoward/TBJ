@@ -17,6 +17,7 @@ predict <- read.csv("EvanHoward_PredictedHits.csv")
 ```
 
 ## Question 1
+### Predict the chance of a pitch being put in play.
 
 This first question asks me to predict the chances of a pitch being put into play by using the training and deploy 
 data sets that were given to me. You can see the predictions in the file titled EvanHoward_PredictedHits.csv.
