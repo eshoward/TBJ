@@ -11,24 +11,49 @@ library(tidyverse)
 library(ggplot2)
 library(tidyr)
 library(dplyr)
+library(ggpubr)
+
+predict <- read.csv("EvanHoward_PredictedHits.csv")
 ```
 
-## R Markdown
+## Question 1
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+This first question asks me to predict the chances of a pitch being put into play by using the training and deploy 
+data sets that were given to me. You can see the predictions in the file titled EvanHoward_PredictedHits.csv.
+Below are the top 15 rows of data from that file. Predicted_Hits are represented as binary with zeroes for not in play, and ones for in play.
 
 ```{r}
+head(predict, 15)
 
 ```
 
-## Including Plots
+## Question 2
+### Explain your process and reasoning for any decisions made in Question 1.
 
-You can also embed plots, for example:
+I chose to employ a Random Forest algorithm because of how robust it is, and its ability to handle
+numerical and categorical features. I initially saw that the SpinRate column had character values so I decided to switch that
+to numerical for both the training and deploy data sets. This ultimately created a problem as it created a couple NA values
+in both data sets. The training data set had seven more rows than the deploy data set. I removed these seven rows randomly in order to stay objective. My model ended up having an accuracy of 60%, which I know is not very good. Ultimately, I would
+like the model to be in the 80-85% accuracy. 
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+## Question 3
+### Please describe to the pitcher how these four variables affect the batter's ability to put the ball in play.
+
+Spin rate will tell you how effectively you are throwing a certain type of pitch, while induced vertical break
+will tell you how well your fastball rides upwards thus making it harder to hit. Horizontal break tells you how much
+your ball moves in, or out, to a hitter and velocity tells you how hard you're throwing the pitch. When taken in combination
+we can try to increase or decrease these four variables to find the right combination for you that makes your fastball, or any
+pitch in your arsenal, the most effective in getting outs.
+
+```{r, echo=FALSE}
+ggplot(predict, aes(factor(Predicted_Hits), InducedVertBreak))+
+  geom_boxplot()+ xlab ("Not in Play or In Play")
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+As you can see in the boxplot above, fastballs with a higher induced vertical break play better in getting more not in play events.
+
+## Question 4
+### Please describe what you would see as the next steps with your model.
+
+The future steps I would like to take with my model is, first and foremost, to increase the accuracy of the model. Next, I would like to add other variables such as release height, pitch location, as well as other pitch types.
